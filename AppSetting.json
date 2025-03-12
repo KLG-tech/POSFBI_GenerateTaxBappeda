@@ -1,0 +1,26 @@
+{
+  "Serilog": {
+    "Using": [ "Serilog.Sinks.File" ],
+    "MinimumLevel": "Information",
+    "WriteTo": [
+      {
+        "Name": "Console"
+      },
+      {
+        "Name": "File",
+        "Args": {
+          "path": "logs/log-.txt",
+          "rollingInterval": "Day",
+          "retainedFileCountLimit": 30
+        }
+      }
+    ]
+  },
+  "ConnectionStrings": {
+    "DevConnection": "Server=10.110.100.18\\dev;Database=ChatimeDev;User Id=itdev;Password=indonesia;",
+    "DefaultConnection": "Server=chatimedb.klgsys.com;Database=chatimeCenter;User Id=sa;Password=indonesia;"
+  },
+  "AppConfig": {
+    "BuCode": "10"
+  }
+}
