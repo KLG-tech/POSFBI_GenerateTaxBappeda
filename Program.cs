@@ -22,7 +22,8 @@ namespace GenerateTaxNew
         {
             // Setup configuration
             var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
+                .SetBasePath(AppContext.BaseDirectory)
+                //.SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
             var configuration = builder.Build();
@@ -31,7 +32,7 @@ namespace GenerateTaxNew
             var logFileName = $"log-{DateTime.Now:yyyyMMdd}.txt";
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
-                .WriteTo.File(Path.Combine(Directory.GetCurrentDirectory(), "logs", logFileName))
+                .WriteTo.File(Path.Combine(AppContext.BaseDirectory, "logs", logFileName))
                 .CreateLogger();
 
             // Use Serilog for logging

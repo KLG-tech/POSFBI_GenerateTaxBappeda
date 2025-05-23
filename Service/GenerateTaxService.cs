@@ -46,7 +46,8 @@ namespace GenerateTaxNew.Service
                             FROM 
                                 GenerateTaxConfig a 
                             INNER JOIN 
-                                company_all b ON a.company_code = b.company_code ");
+                                company_all b ON a.company_code = b.company_code 
+                            Where a.company_code = '"+buCode+"' ");
 
                 using (var conn = new SqlConnection(connectionString))
                 {
@@ -59,8 +60,8 @@ namespace GenerateTaxNew.Service
 
                     foreach (var company in companies)
                     {
-                        tasks.Add(Task.Run(async () =>
-                        {
+                        //tasks.Add(Task.Run(async () =>
+                        //{
                             try
                             {
                                 Logger.LogInformation($"Processing company: {company.company_code}, Name: {company.company_name}");
@@ -82,7 +83,7 @@ namespace GenerateTaxNew.Service
 
                                 if (transactions.Count > 0)
                                 {
-                                    var csvData = GenerateCsv(transactions, company.Area).ToString();
+                                    var csvData = GenerateCsv(transactions, company.Area);
                                     SaveToFile(csvData, company);
 
                                     Logger.LogInformation($"CSV file saved for {company.company_code}");
@@ -115,11 +116,11 @@ namespace GenerateTaxNew.Service
                             {
                                 Logger.LogError(ex, $"An error occurred while processing company {company.company_code}.");
                             }
-                        }));
+                        //}));
                     }
 
                     // Wait for all tasks to complete
-                    await Task.WhenAll(tasks);
+                   // await Task.WhenAll(tasks);
                 }
 
                 Logger.LogInformation("Completed processing all companies.");
@@ -424,7 +425,7 @@ namespace GenerateTaxNew.Service
             return taxDataList;
         }
 
-        private async Task<string> GenerateCsv(List<TransactionData> transactions,string area)
+        private string GenerateCsv(List<TransactionData> transactions,string area)
         {
             var csv = new StringBuilder();
             if (area == "Jaktim") { 
